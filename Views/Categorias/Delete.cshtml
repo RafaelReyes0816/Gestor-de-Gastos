@@ -1,0 +1,56 @@
+@model Gestor_Gastos.Models.Categoria
+@{
+    ViewData["Title"] = "Eliminar Categoría";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2>Eliminar Categoría</h2>
+    <hr />
+
+    <div class="alert alert-warning">
+        <h5>¿Estás seguro de que deseas eliminar esta categoría?</h5>
+    </div>
+
+    @if (ViewBag.TieneGastos == true)
+    {
+        <div class="alert alert-info">
+            <strong>Nota:</strong> Esta categoría tiene gastos asociados. Al eliminarla, se marcará como inactiva pero los gastos existentes se mantendrán.
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="row">
+                <dt class="col-sm-4">Nombre:</dt>
+                <dd class="col-sm-8">@Model.Nombre</dd>
+
+                <dt class="col-sm-4">Descripción:</dt>
+                <dd class="col-sm-8">@(Model.Descripcion ?? "-")</dd>
+
+                <dt class="col-sm-4">Color:</dt>
+                <dd class="col-sm-8">
+                    @if (!string.IsNullOrEmpty(Model.Color))
+                    {
+                        <span class="badge" style="background-color: @Model.Color; color: white;">
+                            @Model.Color
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="text-muted">-</span>
+                    }
+                </dd>
+            </dl>
+
+            <form asp-action="Delete" method="post">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Eliminar
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+
