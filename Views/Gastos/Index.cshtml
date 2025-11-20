@@ -1,0 +1,139 @@
+@model List<Gestor_Gastos.Models.ViewModels.GastoViewModel>
+@{
+    ViewData["Title"] = "Mis Gastos";
+}
+
+<h1 class="mb-4">Mis Gastos</h1>
+
+<div class="alert alert-info">
+    <i class="bi bi-info-circle"></i> 
+    Estás viendo gastos del período: <strong>@(ViewBag.PeriodoSeleccionado?.ToUpper() ?? "ÚLTIMOS 30 DÍAS")</strong>
+</div>
+
+<!-- Botones para crear y cambiar período -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <a asp-action="Create" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Nuevo gasto
+        </a>
+    </div>
+    <div>
+        <div class="btn-group" role="group">
+            <a asp-action="Index" asp-route-periodo="diario" 
+               class="btn btn-outline-primary @(ViewBag.PeriodoSeleccionado == "diario" ? "active" : "")">
+                Hoy
+            </a>
+            <a asp-action="Index" asp-route-periodo="semanal" 
+               class="btn btn-outline-primary @(ViewBag.PeriodoSeleccionado == "semanal" ? "active" : "")">
+                Semana
+            </a>
+            <a asp-action="Index" asp-route-periodo="mensual" 
+               class="btn btn-outline-primary @(ViewBag.PeriodoSeleccionado == "mensual" ? "active" : "")">
+                Mes
+            </a>
+            <a asp-action="Index" asp-route-periodo="anual" 
+               class="btn btn-outline-primary @(ViewBag.PeriodoSeleccionado == "anual" ? "active" : "")">
+                Año
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Resumen de totales -->
+@if (Model.Any())
+{
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5>Total gastos</h5>
+                    <h3 class="mb-0">@Model.Count</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5>Total gastado</h5>
+                    <h3 class="mb-0">Bs. @Model.Sum(g => g.Monto).ToString("N0")</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body">
+                    <h5>Promedio</h5>
+                    <h3 class="mb-0">Bs. @Model.Average(g => g.Monto).ToString("N0")</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <h5>Máximo</h5>
+                    <h3 class="mb-0">Bs. @Model.Max(g => g.Monto).ToString("N0")</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Tabla de gastos -->
+@if (!Model.Any())
+{
+    <div class="alert alert-warning text-center">
+        <i class="bi bi-emoji-frown"></i> No hay gastos registrados en este período.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Categoría</th>
+                    <th>Descripción</th>
+                    <th class="text-end">Monto (Bs.)</th>
+                    <th class="text-end">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <span class="badge bg-secondary">@item.FechaGasto.ToString("dd/MM/yyyy")</span>
+                        </td>
+                        <td>
+                            <span class="badge rounded-pill" style="background-color:@item.CategoriaColor; color:white;">
+                                @item.CategoriaNombre
+                            </span>
+                        </td>
+                        <td>
+                            @if (string.IsNullOrWhiteSpace(item.Descripcion))
+                            {
+                                <em>Sin descripción</em>
+                            }
+                            else
+                            {
+                                @item.Descripcion
+                            }
+                        </td>
+                        <td class="text-end fw-bold">
+                            Bs. @item.Monto.ToString("N0")
+                        </td>
+                        <td class="text-end">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

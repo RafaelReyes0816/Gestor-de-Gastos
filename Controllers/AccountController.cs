@@ -45,8 +45,38 @@ namespace Gestor_Gastos.Controllers
                 return View(model);
             }
 
-            // Verificar contraseña hasheada con BCrypt
-            if (!BCrypt.Net.BCrypt.Verify(model.Password, usuario.Password))
+            // Verificar que el hash tenga el formato correcto de BCrypt
+            bool passwordValid = false;
+            try
+            {
+                // Verificar que el hash empiece con $2a$, $2b$ o $2y$ (formatos BCrypt válidos)
+                if (string.IsNullOrEmpty(usuario.Password) || 
+                    (!usuario.Password.StartsWith("$2a$") && 
+                     !usuario.Password.StartsWith("$2b$") && 
+                     !usuario.Password.StartsWith("$2y$")))
+                {
+                    // El hash no tiene formato BCrypt válido
+                    ModelState.AddModelError("", "Error en la configuración de la contraseña. Contacte al administrador.");
+                    return View(model);
+                }
+
+                // Verificar contraseña hasheada con BCrypt
+                passwordValid = BCrypt.Net.BCrypt.Verify(model.Password, usuario.Password);
+            }
+            catch (BCrypt.Net.SaltParseException)
+            {
+                // El hash no es válido (posiblemente está corrupto o en formato incorrecto)
+                ModelState.AddModelError("", "Error en la configuración de la contraseña. Contacte al administrador.");
+                return View(model);
+            }
+            catch (Exception)
+            {
+                // Cualquier otro error en la verificación
+                ModelState.AddModelError("", "Error al verificar la contraseña. Intente nuevamente.");
+                return View(model);
+            }
+
+            if (!passwordValid)
             {
                 ModelState.AddModelError("", "Usuario o contraseña incorrectos");
                 return View(model);
