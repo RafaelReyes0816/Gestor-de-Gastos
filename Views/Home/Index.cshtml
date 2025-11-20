@@ -1,8 +1,337 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model Gestor_Gastos.Models.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container-fluid">
+    <h1 class="mb-4">
+        <i class="bi bi-speedometer2"></i> Dashboard
+    </h1>
+
+    <!-- Tarjetas de resumen por período -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card bg-primary text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-subtitle mb-2">Hoy</h6>
+                            <h3 class="card-title mb-0">Bs. @Model.TotalGastosDia.ToString("N0")</h3>
+                        </div>
+                        <i class="bi bi-calendar-day" style="font-size: 3rem; opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-info text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-subtitle mb-2">Esta Semana</h6>
+                            <h3 class="card-title mb-0">Bs. @Model.TotalGastosSemana.ToString("N0")</h3>
+                        </div>
+                        <i class="bi bi-calendar-week" style="font-size: 3rem; opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-subtitle mb-2">Este Mes</h6>
+                            <h3 class="card-title mb-0">Bs. @Model.TotalGastosMes.ToString("N0")</h3>
+                        </div>
+                        <i class="bi bi-calendar-month" style="font-size: 3rem; opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-warning text-dark h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-subtitle mb-2">Este Año</h6>
+                            <h3 class="card-title mb-0">Bs. @Model.TotalGastosAnio.ToString("N0")</h3>
+                        </div>
+                        <i class="bi bi-calendar-year" style="font-size: 3rem; opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Estadísticas generales -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card border-primary">
+                <div class="card-body text-center">
+                    <h6 class="text-muted">Total Gastos</h6>
+                    <h2 class="text-primary">@Model.TotalGastosRegistrados</h2>
+                    <small class="text-muted">registros</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-success">
+                <div class="card-body text-center">
+                    <h6 class="text-muted">Promedio</h6>
+                    <h2 class="text-success">Bs. @Model.PromedioGasto.ToString("N0")</h2>
+                    <small class="text-muted">por gasto</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-danger">
+                <div class="card-body text-center">
+                    <h6 class="text-muted">Gasto Máximo</h6>
+                    <h2 class="text-danger">Bs. @Model.GastoMaximo.ToString("N0")</h2>
+                    <small class="text-muted">más alto</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-info">
+                <div class="card-body text-center">
+                    <h6 class="text-muted">Gasto Mínimo</h6>
+                    <h2 class="text-info">Bs. @Model.GastoMinimo.ToString("N0")</h2>
+                    <small class="text-muted">más bajo</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row mb-4">
+        <!-- Gráfico de gastos por categoría (Pie Chart) -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-pie-chart"></i> Gastos por Categoría</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="chartCategorias" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfico de gastos por mes (Line Chart) -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="bi bi-graph-up"></i> Evolución de Gastos (Últimos 6 Meses)</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="chartMensual" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de gastos por categoría -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-list-ul"></i> Resumen por Categoría</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.GastosPorCategoria.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Categoría</th>
+                                        <th class="text-end">Total</th>
+                                        <th class="text-end">Cantidad</th>
+                                        <th class="text-end">%</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.GastosPorCategoria)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <span class="badge rounded-pill" style="background-color:@item.CategoriaColor; color:white;">
+                                                    @item.CategoriaNombre
+                                                </span>
+                                            </td>
+                                            <td class="text-end fw-bold">Bs. @item.TotalMonto.ToString("N0")</td>
+                                            <td class="text-end">@item.CantidadGastos</td>
+                                            <td class="text-end">
+                                                <span class="badge bg-secondary">@item.Porcentaje.ToString("F1")%</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info text-center">
+                            <i class="bi bi-info-circle"></i> No hay gastos registrados por categoría.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Últimos gastos -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-clock-history"></i> Últimos Gastos</h5>
+                    <a asp-controller="Gastos" asp-action="Index" class="btn btn-sm btn-outline-primary">
+                        Ver todos
+                    </a>
+                </div>
+                <div class="card-body">
+                    @if (Model.UltimosGastos.Any())
+                    {
+                        <div class="list-group">
+                            @foreach (var gasto in Model.UltimosGastos)
+                            {
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between align-items-center">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">
+                                                <span class="badge rounded-pill" style="background-color:@gasto.CategoriaColor; color:white;">
+                                                    @gasto.CategoriaNombre
+                                                </span>
+                                            </h6>
+                                            <p class="mb-1">
+                                                @(string.IsNullOrWhiteSpace(gasto.Descripcion) ? "Sin descripción" : gasto.Descripcion)
+                                            </p>
+                                            <small class="text-muted">
+                                                <i class="bi bi-calendar"></i> @gasto.FechaGasto.ToString("dd/MM/yyyy")
+                                            </small>
+                                        </div>
+                                        <div class="text-end">
+                                            <h5 class="mb-0 text-primary">Bs. @gasto.Monto.ToString("N0")</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info text-center">
+                            <i class="bi bi-info-circle"></i> No hay gastos registrados.
+                            <br>
+                            <a asp-controller="Gastos" asp-action="Create" class="btn btn-sm btn-primary mt-2">
+                                Registrar primer gasto
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        // Datos para los gráficos
+        const categoriasData = @Html.Raw(Json.Serialize(Model.GastosPorCategoria.Select(c => new {
+            nombre = c.CategoriaNombre,
+            monto = c.TotalMonto,
+            color = c.CategoriaColor
+        })));
+
+        const mensualData = @Html.Raw(Json.Serialize(Model.GastosPorMes.Select(m => new {
+            mes = m.NombreMes,
+            total = m.TotalMonto
+        })));
+
+        // Gráfico de categorías (Pie Chart)
+        const ctxCategorias = document.getElementById('chartCategorias').getContext('2d');
+        new Chart(ctxCategorias, {
+            type: 'pie',
+            data: {
+                labels: categoriasData.map(c => c.nombre),
+                datasets: [{
+                    data: categoriasData.map(c => c.monto),
+                    backgroundColor: categoriasData.map(c => c.color),
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            usePointStyle: true
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += 'Bs. ' + context.parsed.toLocaleString('es-CO');
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfico mensual (Line Chart)
+        const ctxMensual = document.getElementById('chartMensual').getContext('2d');
+        new Chart(ctxMensual, {
+            type: 'line',
+            data: {
+                labels: mensualData.map(m => m.mes),
+                datasets: [{
+                    label: 'Total Gastado',
+                    data: mensualData.map(m => m.total),
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Bs. ' + context.parsed.y.toLocaleString('es-CO');
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'Bs. ' + value.toLocaleString('es-CO');
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}

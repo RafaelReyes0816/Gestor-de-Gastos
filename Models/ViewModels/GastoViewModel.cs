@@ -12,7 +12,7 @@ namespace Gestor_Gastos.Models.ViewModels
 
         [Required(ErrorMessage = "El monto es obligatorio")]
         [Range(0.01, double.MaxValue, ErrorMessage = "El monto debe ser mayor a 0")]
-        [Display(Name = "Monto ($ COP)")]
+        [Display(Name = "Monto (Bs.)")]
         public decimal Monto { get; set; }
 
         [StringLength(500, ErrorMessage = "La descripción no puede exceder 500 caracteres")]
