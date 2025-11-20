@@ -18,5 +18,181 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+  margin-bottom: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* ===== Estilo general oscuro, alineado con login.css ===== */
+
+body {
+  background-color: #0f0f0f;
+  color: #f0f0f0;
+}
+
+a {
+  color: #ff6b6b;
+}
+
+a:hover {
+  color: #ff8787;
+}
+
+/* Navbar principal clara -> forzar tema oscuro/rojo */
+
+.navbar {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.navbar-light.bg-white {
+  background-color: #1a1a1a !important;
+  border-bottom: 1px solid rgba(139, 0, 0, 0.4);
+}
+
+.navbar-light .navbar-brand,
+.navbar-light .nav-link,
+.navbar-light .navbar-text {
+  color: #f0f0f0 !important;
+}
+
+.navbar-light .nav-link:hover,
+.navbar-light .nav-link:focus {
+  color: #ff6b6b !important;
+}
+
+/* Cards y contenedores */
+
+.card {
+  background-color: #181818;
+  border: 1px solid rgba(139, 0, 0, 0.4);
+  color: #f0f0f0;
+}
+
+.card-header {
+  background-color: #111111;
+  border-bottom: 1px solid rgba(139, 0, 0, 0.5);
+}
+
+.card-header.bg-primary,
+.card-header.bg-success,
+.card-header.bg-warning,
+.card-header.bg-info,
+.card-header.bg-dark {
+  background-image: linear-gradient(135deg, #8B0000 0%, #A52A2A 100%);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Tablas */
+
+.table {
+  color: #ffffff;
+}
+
+.table thead th,
+.table tbody td {
+  color: #ffffff;
+}
+
+.table thead.table-light,
+.table thead.table-light th {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+.table thead th {
+  border-bottom-color: rgba(139, 0, 0, 0.7);
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.table-hover > tbody > tr:hover {
+  background-color: rgba(139, 0, 0, 0.2);
+}
+
+/* Botones generales, usando la paleta del login */
+
+.btn-primary,
+.btn-success,
+.btn-warning,
+.btn-info {
+  background-image: linear-gradient(135deg, #8B0000 0%, #A52A2A 100%);
+  border: none;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
+}
+
+.btn-primary:hover,
+.btn-success:hover,
+.btn-warning:hover,
+.btn-info:hover {
+  background-image: linear-gradient(135deg, #A52A2A 0%, #8B0000 100%);
+  box-shadow: 0 6px 16px rgba(139, 0, 0, 0.4);
+}
+
+.btn-outline-primary {
+  border-color: #8B0000;
+  color: #ff6b6b;
+}
+
+.btn-outline-primary:hover {
+  background-color: #8B0000;
+  color: #ffffff;
+}
+
+/* Alertas */
+
+.alert-info {
+  background-color: rgba(15, 15, 15, 0.9);
+  border-color: rgba(139, 0, 0, 0.4);
+  color: #f0f0f0;
+}
+
+.alert-success {
+  background-color: rgba(34, 139, 34, 0.15);
+  border-color: rgba(34, 139, 34, 0.5);
+  color: #d4fdd4;
+}
+
+.alert-warning {
+  background-color: rgba(255, 165, 0, 0.15);
+  border-color: rgba(255, 165, 0, 0.5);
+}
+
+.alert-danger {
+  background-color: rgba(139, 0, 0, 0.25);
+  border-color: rgba(139, 0, 0, 0.6);
+}
+
+/* Inputs en formularios (cuando no usan login.css) */
+
+.form-control {
+  background-color: #121212;
+  border: 1px solid rgba(139, 0, 0, 0.3);
+  color: #f0f0f0;
+}
+
+.form-control:focus {
+  background-color: #181818;
+  border-color: rgba(139, 0, 0, 0.6);
+  box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.2);
+  color: #ffffff;
+}
+
+.form-label {
+  color: #e0e0e0;
+}
+
+/* Footer */
+
+.footer {
+  background-color: #111111;
+  border-top: 1px solid rgba(139, 0, 0, 0.4);
+}
+
+.footer .text-muted {
+  color: #ff6b6b !important;
 }
