@@ -1,0 +1,154 @@
+@model Gestor_Gastos.Models.ViewModels.UsuarioDetalleViewModel
+@{
+    ViewData["Title"] = "Administración - Detalle de Usuario";
+    Layout = "_Layout.Admin";
+}
+
+<div class="container-fluid">
+    <h1 class="mb-4">
+        <i class="bi bi-person-badge"></i> Detalle de Usuario
+    </h1>
+
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Información del Usuario</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Username:</strong> @Model.Usuario.Username</p>
+                    <p><strong>Nombre:</strong> @Model.Usuario.Nombre @Model.Usuario.Apellido</p>
+                    <p><strong>Email:</strong> @Model.Usuario.Email</p>
+                    <p><strong>Rol:</strong> @Model.Usuario.Rol</p>
+                    <p><strong>Estado:</strong>
+                        @if (Model.Usuario.Activo)
+                        {
+                            <span class="badge bg-success">Activo</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Inactivo</span>
+                        }
+                    </p>
+                    <p><strong>Fecha de creación:</strong> @Model.Usuario.FechaCreacion.ToString("dd/MM/yyyy")</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8 mb-3">
+            <div class="card h-100">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Resumen de Gastos del Usuario</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-4 mb-3">
+                            <h6 class="text-muted">N° de Gastos</h6>
+                            <h3>@Model.TotalGastos</h3>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <h6 class="text-muted">Total Gastado</h6>
+                            <h3>Bs. @Model.TotalMonto.ToString("N0")</h3>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <h6 class="text-muted">Promedio por Gasto</h6>
+                            <h3>Bs. @Model.PromedioGasto.ToString("N0")</h3>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <h6>Resumen por Categoría</h6>
+                    @if (Model.GastosPorCategoria.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Categoría</th>
+                                        <th class="text-end">Total</th>
+                                        <th class="text-end">Cantidad</th>
+                                        <th class="text-end">%</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.GastosPorCategoria)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <span class="badge rounded-pill" style="background-color:@item.CategoriaColor; color:white;">
+                                                    @item.CategoriaNombre
+                                                </span>
+                                            </td>
+                                            <td class="text-end">Bs. @item.TotalMonto.ToString("N0")</td>
+                                            <td class="text-end">@item.CantidadGastos</td>
+                                            <td class="text-end">@item.Porcentaje.ToString("F1")%</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info text-center">
+                            <i class="bi bi-info-circle"></i> No hay gastos registrados para este usuario.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Todos los Gastos del Usuario</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Gastos.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Categoría</th>
+                                        <th>Monto</th>
+                                        <th>Descripción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var g in Model.Gastos)
+                                    {
+                                        <tr>
+                                            <td>@g.FechaGasto.ToString("dd/MM/yyyy")</td>
+                                            <td>@g.Categoria.Nombre</td>
+                                            <td>Bs. @g.Monto.ToString("N0")</td>
+                                            <td>@(string.IsNullOrWhiteSpace(g.Descripcion) ? "-" : g.Descripcion)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info text-center">
+                            <i class="bi bi-info-circle"></i> Este usuario aún no tiene gastos registrados.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 d-flex justify-content-between">
+            <a asp-controller="Admin" asp-action="Usuarios" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Volver a usuarios
+            </a>
+        </div>
+    </div>
+</div>

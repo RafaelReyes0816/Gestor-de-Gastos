@@ -1,3 +1,4 @@
 ﻿@{
-    Layout = "_Layout";
+    var rol = Context.Session.GetString("Rol");
+    Layout = rol == "Administrador" ? "_Layout.Admin" : "_Layout";
 }

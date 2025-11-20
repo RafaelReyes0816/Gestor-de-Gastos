@@ -1,0 +1,70 @@
+@model IEnumerable<Gestor_Gastos.Models.Usuario>
+@{
+    ViewData["Title"] = "Administración - Usuarios";
+    Layout = "_Layout.Admin";
+}
+
+<div class="container-fluid">
+    <h1 class="mb-4">
+        <i class="bi bi-people"></i> Usuarios del Sistema
+    </h1>
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Lista de Usuarios</h5>
+        </div>
+        <div class="card-body">
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Nombre Completo</th>
+                                <th>Email</th>
+                                <th>Rol</th>
+                                <th>Activo</th>
+                                <th>Fecha Creación</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var u in Model)
+                            {
+                                <tr>
+                                    <td>@u.Username</td>
+                                    <td>@(u.Nombre + " " + u.Apellido)</td>
+                                    <td>@u.Email</td>
+                                    <td>@u.Rol</td>
+                                    <td>
+                                        @if (u.Activo)
+                                        {
+                                            <span class="badge bg-success">Activo</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Inactivo</span>
+                                        }
+                                    </td>
+                                    <td>@u.FechaCreacion.ToString("dd/MM/yyyy")</td>
+                                    <td class="text-end">
+                                        <a asp-controller="Admin" asp-action="DetalleUsuario" asp-route-id="@u.Id" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-search"></i> Ver detalle
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info text-center">
+                    <i class="bi bi-info-circle"></i> No hay usuarios registrados.
+                </div>
+            }
+        </div>
+    </div>
+</div>
