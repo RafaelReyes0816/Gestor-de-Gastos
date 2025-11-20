@@ -1,0 +1,211 @@
+/* Estilos inspirados en Minutes to Midnight - Linkin Park */
+/* Paleta de colores: Negros, grises oscuros, rojos oscuros */
+
+.login-body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(139, 0, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, rgba(165, 42, 42, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+    z-index: 1;
+}
+
+.login-card {
+    background: rgba(26, 26, 26, 0.95);
+    border: 1px solid rgba(139, 0, 0, 0.3);
+    border-radius: 12px;
+    padding: 40px 35px;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(139, 0, 0, 0.1) inset,
+        0 2px 8px rgba(139, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.login-title {
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.login-subtitle {
+    color: #cccccc;
+    font-size: 14px;
+    margin: 0;
+    opacity: 0.8;
+}
+
+.login-form {
+    margin-top: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    color: #e0e0e0;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+    letter-spacing: 0.3px;
+}
+
+.login-input {
+    background: rgba(15, 15, 15, 0.8);
+    border: 1px solid rgba(139, 0, 0, 0.3);
+    border-radius: 6px;
+    color: #ffffff;
+    padding: 12px 15px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.login-input::placeholder {
+    color: #666666;
+}
+
+.login-input:focus {
+    background: rgba(20, 20, 20, 0.9);
+    border-color: rgba(139, 0, 0, 0.6);
+    outline: none;
+    box-shadow: 
+        0 0 0 3px rgba(139, 0, 0, 0.1),
+        0 2px 8px rgba(139, 0, 0, 0.2);
+    color: #ffffff;
+}
+
+.login-input:hover {
+    border-color: rgba(139, 0, 0, 0.4);
+}
+
+.form-check {
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+}
+
+.form-check-input {
+    background-color: rgba(15, 15, 15, 0.8);
+    border: 1px solid rgba(139, 0, 0, 0.3);
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.form-check-input:checked {
+    background-color: #8B0000;
+    border-color: #8B0000;
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.2);
+}
+
+.form-check-label {
+    color: #cccccc;
+    font-size: 13px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.btn-login {
+    width: 100%;
+    background: linear-gradient(135deg, #8B0000 0%, #A52A2A 100%);
+    border: none;
+    border-radius: 6px;
+    color: #ffffff;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
+    text-transform: uppercase;
+}
+
+.btn-login:hover {
+    background: linear-gradient(135deg, #A52A2A 0%, #8B0000 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(139, 0, 0, 0.4);
+}
+
+.btn-login:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(139, 0, 0, 0.3);
+}
+
+.alert-danger {
+    background: rgba(139, 0, 0, 0.2);
+    border: 1px solid rgba(139, 0, 0, 0.4);
+    border-radius: 6px;
+    color: #ffcccc;
+    padding: 12px;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.text-danger {
+    color: #ff6b6b;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 30px 25px;
+    }
+    
+    .login-title {
+        font-size: 24px;
+    }
+}
+
