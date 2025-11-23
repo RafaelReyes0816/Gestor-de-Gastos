@@ -15,8 +15,3 @@ VALUES ('david.cruz', '$2a$11$3Srb7xxSd5Jvn1NqFdVBlupHRqpaIc9tLt0xuF6np26GgCdlMW
 -- Contraseña: Ivan2024!
 INSERT INTO Usuarios (Username, Password, Email, Nombre, Apellido, Rol, FechaCreacion, Activo)
 VALUES ('ivan.orellana', '$2a$11$fuWWm5lZ39ZdzX5JnlgsEOEZ9MoDzUwshQoPlKXKZo9qnzvQush2O', 'ivan.orellana@example.com', 'Iván', 'Orellana', 'Usuario', NOW(), 1);
-
--- NOTA: Las contraseñas y usuarios son:
--- rafael.reyes: Admin2024!
--- david.cruz: David2024!
--- ivan.orellana: Ivan2024!
